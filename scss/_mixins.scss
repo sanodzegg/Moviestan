@@ -1,0 +1,6 @@
+@mixin absolute($val1, $val2) {
+    position: absolute;
+    top: $val1#{'%'};
+    left: $val2#{'%'};
+    transform: translate(-$val1#{'%'}, -$val2#{'%'});
+}
