@@ -540,6 +540,10 @@ nav .search-icon svg {
   -webkit-text-fill-color: transparent;
 }
 
+.display-on {
+  top: 614px;
+}
+
 .movie-list-section {
   position: absolute;
   left: 0;

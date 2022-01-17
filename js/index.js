@@ -77,11 +77,42 @@ function contentDrag() {
                 'transform': 'translate(-50%, -50%) rotate(180deg)',
                 'transition': 'all .5s'
             })
+            $('.movie-list-section').removeClass('display-on')
         }
     })
-    
-}
 
+    $('.show-content-btn').on('click', function(){
+        $('.movie-list-section').toggleClass('display-on')
+        if($('.movie-list-section').hasClass('display-on')) {
+            $('.movie-list-section').css({
+                'top':'614px',
+                'transition': 'all .5s'
+            })
+            $('#arrow-vector').css({
+                'transform': 'translate(-50%, -50%) rotate(0deg)',
+                'transition': 'all .5s'
+            })
+
+            // fix this
+            
+            // if($('.description-par').text().length > 350) {
+            //     $('.description-par').addClass('fade')
+            // } else {
+            //     $('.description-par').removeClass('fade')
+            // }
+        }
+        else {
+            $('.movie-list-section').css({
+                'top':'910px',
+                'transition': 'all .5s'
+            })
+            $('#arrow-vector').css({
+                'transform': 'translate(-50%, -50%) rotate(180deg)',
+                'transition': 'all .5s'
+            })
+        }
+    })
+}
 
 function getMovies(url) {
     fetch(url).then(res => res.json()).then(data => {
@@ -89,7 +120,6 @@ function getMovies(url) {
     })
 }
 getMovies(MOST_POPULAR)
-
 
 function randomMovie(data) {
     try {
