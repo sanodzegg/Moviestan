@@ -7,8 +7,14 @@ const THEATRE_URL = BASE_URL + '/discover/movie?primary_release_date.gte=2014-09
 
 $(document).ready(()=>{
     $('.main-loader').fadeOut("slow");
-    randomMovie()
-    randomScroll()
+    randomMovie();
+    randomScroll();
+    contentDrag();
+    setTimeout(() => {
+        if($('.description-par').text().length > 350) {
+            $('.description-par').addClass('fade')
+        }
+    },100)
 })
 
 function getConf() {
@@ -36,35 +42,44 @@ function randomScroll() {
     .then(res => res.json())
     .then(data => {
         for(let i = 0; i < data.results.length; i++) {
-            $('.movie-list-section').append(
+            $('.list-section-inner').append(
                 `<div class="movie-list item">
                     <img src="${'https://image.tmdb.org/t/p/w185' + data.results[i].poster_path}">
                     <span>${data.results[i].original_title}</span>
                 </div>`
             )
-            $('.movie-list').on('click', ()=>{
-                console.log(true);
+        }
+    })
+    $('.movie-list-section').append(`<button class="show-content-btn"><svg id="arrow-vector" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"/></svg></button>`)
+}
+
+function contentDrag() {
+    $('.movie-list-section').draggable({
+        axis: 'y',
+        drag: function(){
+            try {
+                if(parseInt($(this).css('top')) > 600) {
+                    $(this).draggable('destroy')
+                } else if (parseInt($(this).css('top')) < 600) {
+                    $(this).draggable('destroy')
+                }
+            } catch (err) {
+                throw 'Ignore';
+            }
+        },
+        stop: function(){
+            $(this).css({
+                'top': '910px',
+                'transition': 'all .5s'
+            })
+            $('.description-par').removeClass('fade')
+            $('#arrow-vector').css({
+                'transform': 'translate(-50%, -50%) rotate(180deg)',
+                'transition': 'all .5s'
             })
         }
     })
-
-    // es gasaketebelia <-------------------------------------------------------------------------------------
-
-    // $('.movie-list-section').draggable({
-    //     axis: 'x',
-    //     drag: drag
-    // })
-
-    // function drag() {
-    //     console.log(parseInt($('.movie-list-section').css('left')));
-    //     if(parseInt($('.movie-list-section').css('left')) < -2271) {
-    //         $('.movie-list-section').draggable({
-    //             disabled: true
-    //         })
-
-    //     }
-    //     // console.log($('.movie-list-section').css('left'));
-    // }
+    
 }
 
 
