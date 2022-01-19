@@ -403,6 +403,11 @@ nav ul li:hover {
   border-bottom: 1px #13CBB9 solid;
 }
 
+nav ul .active {
+  color: #13C6B3;
+  border-bottom: 1px #13CBB9 solid;
+}
+
 nav .search-icon {
   width: 11.673rem;
   max-width: 100%;
@@ -541,11 +546,14 @@ nav .search-icon svg {
 }
 
 .display-on {
-  top: 614px;
+  top: 65.4%;
 }
 
 .movie-list-section {
   position: absolute;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
   left: 0;
   bottom: 0;
   width: 100vw;
@@ -573,14 +581,14 @@ nav .search-icon svg {
   -webkit-box-pack: start;
       -ms-flex-pack: start;
           justify-content: flex-start;
-  -webkit-box-align: start;
-      -ms-flex-align: start;
-          align-items: flex-start;
-  padding: .7rem 1.3rem;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 0rem 1.3rem;
 }
 
 .movie-list-section .list-section-inner::-webkit-scrollbar {
-  width: 1px;
+  width: 5px;
 }
 
 .movie-list-section .list-section-inner::-webkit-scrollbar-thumb {
@@ -590,7 +598,9 @@ nav .search-icon svg {
 
 .movie-list-section .selected img {
   border: 1px #353c42 solid;
-  max-width: 100%;
+  max-width: -webkit-max-content;
+  max-width: -moz-max-content;
+  max-width: max-content;
   max-height: 100%;
   -o-object-fit: cover;
      object-fit: cover;
@@ -640,6 +650,7 @@ nav .search-icon svg {
   height: 3rem;
   background-color: #14c8b680;
   border-radius: 50%;
+  cursor: pointer;
 }
 
 .movie-list-section .show-content-btn svg {

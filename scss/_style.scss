@@ -53,6 +53,10 @@ nav {
             color: #13C6B3;
             border-bottom: 1px #13CBB9 solid;
         }
+        .active {
+            color: #13C6B3;
+            border-bottom: 1px #13CBB9 solid;
+        }
     }
     .search-icon {
         width: 11.673rem;
@@ -145,10 +149,11 @@ nav {
     }
 }
 .display-on {
-    top: 614px;
+    top: 65.4%;
 }
 .movie-list-section {
     position: absolute;
+    display: flex;
     left: 0;
     bottom: 0;
     width: 100vw;
@@ -161,12 +166,12 @@ nav {
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            align-items: flex-start;
-            padding: .7rem 1.3rem;
+            align-items: center;
+            padding: 0rem 1.3rem;
         }
     }
     .list-section-inner::-webkit-scrollbar {
-        width: 1px;
+        width: 5px;
     }
     .list-section-inner::-webkit-scrollbar-thumb {
         background-color: #13CBB9;
@@ -175,7 +180,7 @@ nav {
     .selected {
         img {
             border: 1px #353c42 solid;
-            max-width: 100%;
+            max-width: max-content;
             max-height: 100%;
             object-fit: cover;
             width: 12.5rem;
@@ -214,6 +219,7 @@ nav {
         height: 3rem;
         background-color: #14c8b680;
         border-radius: 50%;
+        cursor: pointer;
         svg {
             fill: #fff;
             position: absolute;

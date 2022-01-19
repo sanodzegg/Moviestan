@@ -9,12 +9,24 @@ $(document).ready(()=>{
     $('.main-loader').fadeOut("slow");
     randomMovie();
     randomScroll();
-    contentDrag();
+    // contentDrag();
     setTimeout(() => {
         if($('.description-par').text().length > 350) {
             $('.description-par').addClass('fade')
         }
     },100)
+    let navBox = $('nav').find('li')
+    for(let e = 0; e < navBox.length; e++) {
+        navBox[e].addEventListener('click', function(){
+            $('nav').find('li').removeClass('active');
+            for(let a = 0; a < navBox.length; a++) {
+                if(a == e) {
+                    navBox[e].classList.add('active');
+                    break;
+                }
+            }
+        })
+    }
 })
 
 function getConf() {
@@ -48,71 +60,104 @@ function randomScroll() {
                     <span>${data.results[i].original_title}</span>
                 </div>`
             )
+            if(data.results[i].original_title.length >= 12){
+                let teststr = $('.movie-list').find('span')[i];
+                teststr.innerText = teststr.innerText.substring(0, 9) + '...'
+            }
+        }
+        let box = document.querySelectorAll('.movie-list');
+        for(let e = 0; e < box.length; e++) {
+            box[e].addEventListener('click', function(){
+                $('.movie-list').removeClass('selected');
+                $('.movie-list').addClass('item')
+                $('body').css({
+                    'background' : `radial-gradient(circle, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%), 
+                    url(${'https://image.tmdb.org/t/p/original' + data.results[e].poster_path})`,
+                    'background-position' : 'center',
+                    'background-repeat' : 'no-repeat',
+                    'background-size' : 'cover'
+                })
+                $('.stars').attr('style',`--rating: ${data.results[e].vote_average/2};`);
+                $('.header').text(data.results[e].original_title)
+                $('.genres').empty()
+                for(let i = 0; i < data.results[e].genre_ids.length; i++) {
+                    $('.genres').append(`<span>${obj[i].name}</span>`)
+                }
+                $('.description-par').text(data.results[e].overview)
+                if($('.description-par').text().length > 350) {
+                    $('.description-par').addClass('fade')
+                } else {
+                    $('.description-par').removeClass('fade')
+                }
+                for(let a = 0; a < box.length; a++) {
+                    if(a == e) {
+                        box[e].classList.toggle('selected');
+                        box[e].classList.remove('item');
+                        break;
+                    }
+                }
+            })
         }
     })
     $('.movie-list-section').append(`<button class="show-content-btn"><svg id="arrow-vector" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"/></svg></button>`)
-}
-
-function contentDrag() {
-    $('.movie-list-section').draggable({
-        axis: 'y',
-        drag: function(){
-            try {
-                if(parseInt($(this).css('top')) > 600) {
-                    $(this).draggable('destroy')
-                } else if (parseInt($(this).css('top')) < 600) {
-                    $(this).draggable('destroy')
-                }
-            } catch (err) {
-                throw 'Ignore';
-            }
-        },
-        stop: function(){
-            $(this).css({
-                'top': '910px',
-                'transition': 'all .5s'
-            })
-            $('.description-par').removeClass('fade')
-            $('#arrow-vector').css({
-                'transform': 'translate(-50%, -50%) rotate(180deg)',
-                'transition': 'all .5s'
-            })
-            $('.movie-list-section').removeClass('display-on')
-        }
-    })
 
     $('.show-content-btn').on('click', function(){
         $('.movie-list-section').toggleClass('display-on')
         if($('.movie-list-section').hasClass('display-on')) {
             $('.movie-list-section').css({
-                'top':'614px',
+                'top':'65.4%',
                 'transition': 'all .5s'
             })
             $('#arrow-vector').css({
                 'transform': 'translate(-50%, -50%) rotate(0deg)',
                 'transition': 'all .5s'
             })
-
-            // fix this
-            
-            // if($('.description-par').text().length > 350) {
-            //     $('.description-par').addClass('fade')
-            // } else {
-            //     $('.description-par').removeClass('fade')
-            // }
+            if($('.description-par').text().length > 350) {
+                $('.description-par').addClass('fade')
+            }
         }
         else {
             $('.movie-list-section').css({
-                'top':'910px',
+                'top':'94.4%',
                 'transition': 'all .5s'
             })
             $('#arrow-vector').css({
                 'transform': 'translate(-50%, -50%) rotate(180deg)',
                 'transition': 'all .5s'
             })
+            $('.description-par').removeClass('fade')
         }
     })
 }
+
+// function contentDrag() {
+//     $('.movie-list-section').draggable({
+//         axis: 'y',
+//         drag: function(){
+//             try {
+//                 if(parseInt($(this).css('top')) > 600) {
+//                     $(this).draggable('destroy')
+//                 } else if (parseInt($(this).css('top')) < 600) {
+//                     $(this).draggable('destroy')
+//                 }
+//             } catch (err) {
+//                 throw 'Ignore';
+//             }
+//         },
+//         stop: function(){
+//             $(this).css({
+//                 'top': '910px',
+//                 'transition': 'all .5s'
+//             })
+//             $('.description-par').removeClass('fade')
+//             $('#arrow-vector').css({
+//                 'transform': 'translate(-50%, -50%) rotate(180deg)',
+//                 'transition': 'all .5s'
+//             })
+//             $('.movie-list-section').removeClass('display-on')
+//         }
+//     })
+// }
 
 function getMovies(url) {
     fetch(url).then(res => res.json()).then(data => {
