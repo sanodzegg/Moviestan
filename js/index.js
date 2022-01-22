@@ -12,7 +12,8 @@ $(document).ready(()=>{
     // contentDrag();
     setTimeout(() => {
         if($('.description-par').text().length > 350) {
-            $('.description-par').addClass('fade')
+            // $('.description-par').addClass('fade')
+            $('.description-par').addClass('overflow-scroll')
         }
     },100)
     let navBox = $('nav').find('li')
@@ -73,7 +74,7 @@ function randomScroll() {
                 $('body').css({
                     'background' : `radial-gradient(circle, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%), 
                     url(${'https://image.tmdb.org/t/p/original' + data.results[e].poster_path})`,
-                    'background-position' : 'center',
+                    'background-position' : '0 20%',
                     'background-repeat' : 'no-repeat',
                     'background-size' : 'cover'
                 })
@@ -85,9 +86,9 @@ function randomScroll() {
                 }
                 $('.description-par').text(data.results[e].overview)
                 if($('.description-par').text().length > 350) {
-                    $('.description-par').addClass('fade')
+                    $('.description-par').addClass('overflow-scroll')
                 } else {
-                    $('.description-par').removeClass('fade')
+                    $('.description-par').addClass('overflow-scroll')
                 }
                 for(let a = 0; a < box.length; a++) {
                     if(a == e) {
@@ -99,40 +100,40 @@ function randomScroll() {
             })
         }
     })
-    $('.movie-list-section').append(`<button class="show-content-btn"><svg id="arrow-vector" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"/></svg></button>`)
+    // $('.movie-list-section').append(`<button class="show-content-btn"><svg id="arrow-vector" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"/></svg></button>`)
 
-    $('.show-content-btn').on('click', function(){
-        $('.movie-list-section').toggleClass('display-on')
-        if($('.movie-list-section').hasClass('display-on')) {
-            $('.movie-list-section').css({
-                'top':'65.4%',
-                'transition': 'all .5s'
-            })
-            $('#arrow-vector').css({
-                'transform': 'translate(-50%, -50%) rotate(0deg)',
-                'transition': 'all .5s'
-            })
-            if($('.description-par').text().length > 350) {
-                $('.description-par').addClass('fade')
-            }
-        }
-        else {
-            $('.movie-list-section').css({
-                'top':'94.4%',
-                'transition': 'all .5s'
-            })
-            $('#arrow-vector').css({
-                'transform': 'translate(-50%, -50%) rotate(180deg)',
-                'transition': 'all .5s'
-            })
-            $('.description-par').removeClass('fade')
-        }
-    })
+    // $('.show-content-btn').on('click', function(){
+    //     $('.movie-list-section').toggleClass('display-on');
+    //     if($('.movie-list-section').hasClass('display-on')) {
+    //         $('.movie-list-section').css({
+    //             'top':'65.4%',
+    //             'transition': 'all .5s'
+    //         })
+    //         $('#arrow-vector').css({
+    //             'transform': 'translate(-50%, -50%) rotate(0deg)',
+    //             'transition': 'all .5s'
+    //         })
+    //         if($('.description-par').text().length > 350) {
+    //             $('.description-par').addClass('fade')
+    //         }
+    //     }
+    //     else {
+    //         $('.movie-list-section').css({
+    //             'top':'94.4%',
+    //             'transition': 'all .5s'
+    //         })
+    //         $('#arrow-vector').css({
+    //             'transform': 'translate(-50%, -50%) rotate(180deg)',
+    //             'transition': 'all .5s'
+    //         })
+    //         $('.description-par').removeClass('fade')
+    //     }
+    // })
 }
 
 // function contentDrag() {
 //     $('.movie-list-section').draggable({
-//         axis: 'y',
+//         axis: 'x',
 //         drag: function(){
 //             try {
 //                 if(parseInt($(this).css('top')) > 600) {
@@ -184,8 +185,9 @@ function randomMovie(data) {
     } catch (err) {
         console.error(err)
     }
+    console.log(data);
 }
 
 function getRandom(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
-}
+}z

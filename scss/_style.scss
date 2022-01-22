@@ -30,6 +30,9 @@ nav {
     width: 100vw;
     padding: 0 5rem;
     border-bottom: 1px solid #56626D;
+    a {
+        text-decoration: none;
+    }
     h1 {
         margin: 0;
         color: #13CBB9;
@@ -71,6 +74,7 @@ nav {
         }
     }
 }
+
 .main-section {
     display: flex;
     justify-content: center;
@@ -100,6 +104,21 @@ nav {
         }
         p {
             max-width: 33rem;
+        }
+        .description-par {
+            padding-right: 1rem;
+        }
+        .overflow-scroll {
+            max-height: 7rem;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+        .overflow-scroll::-webkit-scrollbar {
+            width: 5px;
+        }
+        .overflow-scroll::-webkit-scrollbar-thumb {
+            background-color: #13CBB9;
+            border-radius: 10px;
         }
         .fade {
             background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
@@ -153,13 +172,13 @@ nav {
 }
 .movie-list-section {
     position: absolute;
-    display: flex;
     left: 0;
     bottom: 0;
     width: 100vw;
+    overflow-x: scroll;
+    overflow-y: hidden;
     .list-section-inner {
         display: flex;
-        overflow-x: scroll;
         .movie-list {
             min-width: 12.5rem;
             width: max-content;
@@ -167,15 +186,8 @@ nav {
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
-            padding: 0rem 1.3rem;
+            padding: 2.5rem 1.3rem;
         }
-    }
-    .list-section-inner::-webkit-scrollbar {
-        width: 5px;
-    }
-    .list-section-inner::-webkit-scrollbar-thumb {
-        background-color: #13CBB9;
-        border-radius: 10px;
     }
     .selected {
         img {
@@ -184,7 +196,7 @@ nav {
             max-height: 100%;
             object-fit: cover;
             width: 12.5rem;
-            height: 18rem;
+            height: 15rem;
             transition: all .3s;
         }
         span {
@@ -200,7 +212,7 @@ nav {
             max-width: 100%;
             max-height: 100%;
             width: 10.5rem;
-            height: 15rem;
+            height: 13rem;
             object-fit: cover;
             transition: all .3s;
         }
@@ -212,7 +224,6 @@ nav {
         }
     }
     .show-content-btn {
-        position: absolute;
         @include absolute(0, 95);
         top: -5%;
         width: 3rem;
@@ -229,4 +240,11 @@ nav {
             transform-origin: center;
         }
     }
+}
+.movie-list-section::-webkit-scrollbar {
+    width: 5px;
+}
+.movie-list-section::-webkit-scrollbar-thumb {
+    background-color: #13CBB9;
+    border-radius: 10px;
 }
