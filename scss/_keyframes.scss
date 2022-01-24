@@ -6,3 +6,12 @@
       transform: rotate(360deg);
     }
 }
+
+@keyframes img-loader {
+  0% {
+    transform: translate(-50%, -50%) scale(1.5) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.5) rotate(360deg);
+  }
+}

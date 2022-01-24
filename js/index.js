@@ -50,6 +50,38 @@ function getGenres() {
 }
 getGenres()
 
+function getMovies(url) {
+    fetch(url).then(res => res.json()).then(data => {
+        randomMovie(data);
+        $('.watch').on('click', function(){
+            getVideo(data)
+        })
+    })
+}
+getMovies(MOST_POPULAR)
+
+let val = new Number;
+
+function randomMovie(data) {
+    try {
+        val = getRandom(0, 20)
+        $('body').css({
+            'background' : `radial-gradient(circle, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%), url(${BACKDROP_URL + data.results[val].backdrop_path})`,
+            'background-position' : 'center',
+            'background-repeat' : 'no-repeat',
+            'background-size' : 'cover'
+        })
+        $('.header').text(data.results[val].original_title)
+        $('.stars').attr('style',`--rating: ${data.results[val].vote_average/2};`);
+        for(let i = 0; i < data.results[val].genre_ids.length; i++) {
+            $('.genres').append(`<span>${obj[i].name}</span>`)
+        }
+        $('.description-par').text(data.results[val].overview)
+    } catch (err) {
+        
+    }
+}
+
 function randomScroll() {
     fetch(THEATRE_URL)
     .then(res => res.json())
@@ -57,10 +89,14 @@ function randomScroll() {
         for(let i = 0; i < data.results.length; i++) {
             $('.list-section-inner').append(
                 `<div class="movie-list item">
+                    <div class="img-loader"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 11c.511-6.158 5.685-11 12-11s11.489 4.842 12 11h-2.009c-.506-5.046-4.793-9-9.991-9s-9.485 3.954-9.991 9h-2.009zm21.991 2c-.506 5.046-4.793 9-9.991 9s-9.485-3.954-9.991-9h-2.009c.511 6.158 5.685 11 12 11s11.489-4.842 12-11h-2.009z"/></svg></div>
                     <img src="${'https://image.tmdb.org/t/p/w185' + data.results[i].poster_path}">
                     <span>${data.results[i].original_title}</span>
                 </div>`
             )
+            $('img').ready(function(){
+                $('.img-loader').fadeOut('slow');
+            })
             if(data.results[i].original_title.length >= 12){
                 let teststr = $('.movie-list').find('span')[i];
                 teststr.innerText = teststr.innerText.substring(0, 9) + '...'
@@ -69,6 +105,11 @@ function randomScroll() {
         let box = document.querySelectorAll('.movie-list');
         for(let e = 0; e < box.length; e++) {
             box[e].addEventListener('click', function(){
+                val = e;
+                $('.watch').off('click')
+                $('.watch').on('click', function(){
+                    getVideo(data);
+                })
                 $('.movie-list').removeClass('selected');
                 $('.movie-list').addClass('item')
                 $('body').css({
@@ -100,94 +141,41 @@ function randomScroll() {
             })
         }
     })
-    // $('.movie-list-section').append(`<button class="show-content-btn"><svg id="arrow-vector" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"/></svg></button>`)
-
-    // $('.show-content-btn').on('click', function(){
-    //     $('.movie-list-section').toggleClass('display-on');
-    //     if($('.movie-list-section').hasClass('display-on')) {
-    //         $('.movie-list-section').css({
-    //             'top':'65.4%',
-    //             'transition': 'all .5s'
-    //         })
-    //         $('#arrow-vector').css({
-    //             'transform': 'translate(-50%, -50%) rotate(0deg)',
-    //             'transition': 'all .5s'
-    //         })
-    //         if($('.description-par').text().length > 350) {
-    //             $('.description-par').addClass('fade')
-    //         }
-    //     }
-    //     else {
-    //         $('.movie-list-section').css({
-    //             'top':'94.4%',
-    //             'transition': 'all .5s'
-    //         })
-    //         $('#arrow-vector').css({
-    //             'transform': 'translate(-50%, -50%) rotate(180deg)',
-    //             'transition': 'all .5s'
-    //         })
-    //         $('.description-par').removeClass('fade')
-    //     }
-    // })
 }
 
-// function contentDrag() {
-//     $('.movie-list-section').draggable({
-//         axis: 'x',
-//         drag: function(){
-//             try {
-//                 if(parseInt($(this).css('top')) > 600) {
-//                     $(this).draggable('destroy')
-//                 } else if (parseInt($(this).css('top')) < 600) {
-//                     $(this).draggable('destroy')
-//                 }
-//             } catch (err) {
-//                 throw 'Ignore';
-//             }
-//         },
-//         stop: function(){
-//             $(this).css({
-//                 'top': '910px',
-//                 'transition': 'all .5s'
-//             })
-//             $('.description-par').removeClass('fade')
-//             $('#arrow-vector').css({
-//                 'transform': 'translate(-50%, -50%) rotate(180deg)',
-//                 'transition': 'all .5s'
-//             })
-//             $('.movie-list-section').removeClass('display-on')
-//         }
-//     })
-// }
-
-function getMovies(url) {
-    fetch(url).then(res => res.json()).then(data => {
-        randomMovie(data)
+function getVideo(data){
+    fetch(`${BASE_URL}/movie/${data.results[val].id}/videos?${API_KEY}`).then(res => res.json())
+    .then(data => {
+       if(data){
+           var embed = [];
+           data.results.forEach(v => {
+               let {name, key, site, type} = v;
+               if(site == 'YouTube' && type == 'Trailer') {
+                   embed.push(`
+                   <iframe width="560" height="315" src="https://www.youtube.com/embed/${key}" 
+                   title="${name}" frameborder="0" allow="accelerometer; autoplay; 
+                   clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                   `)
+               }
+           })
+       }
+       $('body').append(`<div class="background-shadow">
+       <div class="embed-loader"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 11c.511-6.158 5.685-11 12-11s11.489 4.842 12 11h-2.009c-.506-5.046-4.793-9-9.991-9s-9.485 3.954-9.991 9h-2.009zm21.991 2c-.506 5.046-4.793 9-9.991 9s-9.485-3.954-9.991-9h-2.009c.511 6.158 5.685 11 12 11s11.489-4.842 12-11h-2.009z"/></svg></div>
+       <div class="embed-video trailer">${embed[0]}</div>
+       </div>`)
+       $('embed').ready(function(){
+           $('.embed-loader').fadeOut('slow')
+       })
+       $(document).mouseup(function(e){
+            var container = $("embed");
+            if (!container.is(e.target) && container.has(e.target).length === 0) 
+            {
+                $('.background-shadow').remove();
+            }
+        });
     })
-}
-getMovies(MOST_POPULAR)
-
-function randomMovie(data) {
-    try {
-        let val = getRandom(0, 20)
-        $('body').css({
-            'background' : `radial-gradient(circle, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%), url(${BACKDROP_URL + data.results[val].backdrop_path})`,
-            'background-position' : 'center',
-            'background-repeat' : 'no-repeat',
-            'background-size' : 'cover'
-        })
-        $('.header').text(data.results[val].original_title)
-        $('.stars').attr('style',`--rating: ${data.results[val].vote_average/2};`);
-        for(let i = 0; i < data.results[val].genre_ids.length; i++) {
-            $('.genres').append(`<span>${obj[i].name}</span>`)
-        }
-        $('.description-par').text(data.results[val].overview)
-    } catch (err) {
-        console.error(err)
-    }
-    console.log(data);
 }
 
 function getRandom(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
-}z
+}

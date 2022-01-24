@@ -4,7 +4,34 @@ body {
     overflow: hidden;
     height: 100vh;
     max-height: 100%;
+    .background-shadow {
+        position: absolute;
+        inset: 0;
+        background-color: #0000008a;
+        .embed-loader {
+            @include absolute(50, 50);
+            height: 100vh;
+            width: 100vw;
+            background-color: #373b3e7a;
+            svg {
+                height: 3.75rem;
+                width: 3.75rem;
+                @include absolute(50, 50);
+                fill: #13CBB9;
+                animation: img-loader 1.3s;
+                animation-iteration-count: infinite;
+            }
+        }
+        .embed-video {
+            @include absolute(50, 50);
+            iframe {
+                width: 50rem;
+                height: 32rem;
+            }
+        }
+    }
 }
+
 .radial-shade {
     position: absolute;
     inset: 0;
@@ -30,6 +57,9 @@ nav {
     width: 100vw;
     padding: 0 5rem;
     border-bottom: 1px solid #56626D;
+    *{
+        max-width: 35%;
+    }
     a {
         text-decoration: none;
     }
@@ -61,16 +91,33 @@ nav {
             border-bottom: 1px #13CBB9 solid;
         }
     }
-    .search-icon {
+    .input-field {
         width: 11.673rem;
-        max-width: 100%;
-        svg {
-            fill: #13CBB9;
-            z-index: 10;
-            background-color: #373B3E;
-            box-sizing: content-box;
-            padding: .65rem;
-            border-radius: 50%;
+        .search-icon {
+            float: right;
+            width: 2.5rem;
+            height: 2.5rem;
+            max-width: 100%;
+            border-radius: 1.7rem;
+            color: transparent;
+            padding: .5rem;
+            outline: none;
+            background: url(../media/svg/generic/search-lupe.svg) no-repeat #373B3E;
+            background-position: right 7px bottom 8px;
+            transition: width 1s;
+        }
+        .search-icon::-webkit-input-placeholder {
+            color: transparent;
+        }
+    
+        .search-icon:hover, .search-icon:focus {
+            color: #fff;
+            width: 11.673rem;
+            border-radius: 1.7rem;
+            padding: .5rem .7rem;
+            background: url(../media/svg/generic/search-lupe.svg) no-repeat #373B3E;
+            background-position: right 7px bottom 8px;
+            padding-right: 30px;
         }
     }
 }
@@ -207,6 +254,24 @@ nav {
         }
     }
     .item {
+        position: relative;
+        .img-loader {
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            height: 13rem;
+            width: 9.9rem;
+            background-color: #373B3E;
+            svg {
+                fill: #13CBB9;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                animation: img-loader 1.3s;
+                animation-iteration-count: infinite;
+            }
+        }
         img {
             border: 1px #353c42 solid;
             max-width: 100%;
