@@ -393,11 +393,6 @@ body .background-shadow .embed-video iframe {
   height: 32rem;
 }
 
-.radial-shade {
-  position: absolute;
-  inset: 0;
-}
-
 .main-loader {
   position: absolute;
   top: 50%;
@@ -439,8 +434,48 @@ nav {
   border-bottom: 1px solid #56626D;
 }
 
-nav * {
-  max-width: 35%;
+nav .search-results, nav .search-icon {
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  background-color: #353c42;
+}
+
+nav .search-results div, nav .search-icon div {
+  width: 17rem;
+  max-height: 3.5rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-bottom: .3px solid #80808041;
+  border-top: .3px solid #80808041;
+  padding: 0 .3rem;
+}
+
+nav .search-results div h5, nav .search-icon div h5 {
+  color: #fff;
+  white-space: break-word;
+  padding: .5rem 0rem;
+  max-width: 11.673rem;
+  margin: 0;
+  font-size: 1rem;
+}
+
+nav .search-results div img, nav .search-icon div img {
+  max-width: -webkit-max-content;
+  max-width: -moz-max-content;
+  max-width: max-content;
+  max-height: 3.5rem;
+}
+
+nav .search-results div:hover, nav .search-icon div:hover {
+  background-color: #30353a;
 }
 
 nav a {
@@ -460,6 +495,7 @@ nav h1 span {
 nav ul {
   margin: 0;
   padding: 0;
+  min-width: 33rem;
 }
 
 nav ul li {
@@ -484,6 +520,24 @@ nav ul .active {
 
 nav .input-field {
   width: 11.673rem;
+  position: relative;
+}
+
+nav .input-field .search-results {
+  position: absolute;
+  top: 128%;
+  right: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+nav .input-field .search-results:hover {
+  cursor: pointer;
 }
 
 nav .input-field .search-icon {
@@ -497,8 +551,8 @@ nav .input-field .search-icon {
   outline: none;
   background: url(../media/svg/generic/search-lupe.svg) no-repeat #373B3E;
   background-position: right 7px bottom 8px;
-  -webkit-transition: width 1s;
-  transition: width 1s;
+  -webkit-transition: width .5s ease;
+  transition: width .5s ease;
 }
 
 nav .input-field .search-icon::-webkit-input-placeholder {

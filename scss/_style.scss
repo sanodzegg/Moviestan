@@ -32,10 +32,6 @@ body {
     }
 }
 
-.radial-shade {
-    position: absolute;
-    inset: 0;
-}
 .main-loader {
     @include absolute(50, 50);
     height: 100vh;
@@ -57,8 +53,34 @@ nav {
     width: 100vw;
     padding: 0 5rem;
     border-bottom: 1px solid #56626D;
-    *{
-        max-width: 35%;
+    .search-results, .search-icon{
+        width: max-content;
+        background-color: #353c42;
+        div {
+            width: 17rem;
+            max-height: 3.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: .3px solid #80808041;
+            border-top: .3px solid #80808041;
+            padding: 0 .3rem;
+            h5 {
+                color: #fff;
+                white-space: break-word;
+                padding: .5rem 0rem;
+                max-width: 11.673rem;
+                margin: 0;
+                font-size: 1rem;
+            }
+            img {
+                max-width: max-content;
+                max-height: 3.5rem;
+            }
+        }
+        div:hover {
+            background-color: #30353a;
+        }
     }
     a {
         text-decoration: none;
@@ -74,6 +96,7 @@ nav {
     ul {
         margin: 0;
         padding: 0;
+        min-width: 33rem;
         li {
             cursor: pointer;
             display: inline-block;
@@ -93,6 +116,17 @@ nav {
     }
     .input-field {
         width: 11.673rem;
+        position: relative;
+        .search-results {
+            position: absolute;
+            top: 128%;
+            right: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .search-results:hover {
+            cursor: pointer;
+        }
         .search-icon {
             float: right;
             width: 2.5rem;
@@ -104,7 +138,7 @@ nav {
             outline: none;
             background: url(../media/svg/generic/search-lupe.svg) no-repeat #373B3E;
             background-position: right 7px bottom 8px;
-            transition: width 1s;
+            transition: width .5s ease;
         }
         .search-icon::-webkit-input-placeholder {
             color: transparent;

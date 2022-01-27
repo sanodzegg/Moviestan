@@ -5,7 +5,7 @@ const POSTER_URL = 'https://image.tmdb.org/t/p/w500';
 const BACKDROP_URL = 'https://image.tmdb.org/t/p/original';
 const THEATRE_URL = BASE_URL + '/discover/movie?primary_release_date.gte=2014-09-15&primary_release_date.lte=2021-10-22&' + API_KEY;
 
-$(document).ready(()=>{
+$(document).ready(function(){
     $('.main-loader').fadeOut("slow");
     randomMovie();
     randomScroll();
@@ -28,13 +28,21 @@ $(document).ready(()=>{
             }
         })
     }
+    $('#searchField').keyup(function(){
+        search();
+        if($('#searchField').val().length == 0) {
+            $('.search-results').text('')
+        }
+    })
+    navigation();
 })
+
 
 function getConf() {
     fetch('https://api.themoviedb.org/3/configuration?api_key=da0ec74f280b41c3b79d45fa4cd12578')
     .then(res=> res.json())
     .then(data => {
-        // console.log(data);
+        console.log(data);
     })
 }
 getConf()
@@ -98,8 +106,8 @@ function randomScroll() {
                 $('.img-loader').fadeOut('slow');
             })
             if(data.results[i].original_title.length >= 12){
-                let teststr = $('.movie-list').find('span')[i];
-                teststr.innerText = teststr.innerText.substring(0, 9) + '...'
+                let str = $('.movie-list').find('span')[i];
+                str.innerText = str.innerText.substring(0, 9) + '...'
             }
         }
         let box = document.querySelectorAll('.movie-list');
@@ -174,6 +182,43 @@ function getVideo(data){
             }
         });
     })
+}
+
+function search(){
+    let term = $('#searchField').val()
+    fetch(`${BASE_URL}/search/movie?${API_KEY}&query=${term}`).then(res => res.json())
+    .then(data => {
+        try{
+            for(let i = 0; i < 5; i++){
+                $('.search-results').append(
+                    `<div>
+                        <h5>${data.results[i].original_title}</h5>
+                        <img class="search-poster" src="https://image.tmdb.org/t/p/w92${data.results[i].backdrop_path}"></img>
+                    </div>`
+                )
+                // if('.'){
+
+                // }
+                if($('.search-results').children().length > 5) {
+                    $('.search-results').children()[i].remove();
+                }
+            };
+        } catch(err) {
+
+        }
+    })
+
+    $(document).mouseup(function(e){
+        var container = $('.search-results');
+        if (!container.is(e.target) && container.has(e.target).length === 0) 
+        {
+            $('.search-results').text('');
+        }
+    });
+}
+
+function navigation() {
+
 }
 
 function getRandom(min, max) {
