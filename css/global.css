@@ -351,7 +351,7 @@ body {
 body .background-shadow {
   position: absolute;
   inset: 0;
-  background-color: #0000008a;
+  background-color: #000000bd;
 }
 
 body .background-shadow .embed-loader {
@@ -391,6 +391,7 @@ body .background-shadow .embed-video {
 body .background-shadow .embed-video iframe {
   width: 50rem;
   height: 32rem;
+  max-width: 100%;
 }
 
 .main-loader {
@@ -459,7 +460,7 @@ nav .search-results div, nav .search-icon div {
 }
 
 nav .search-results div h5, nav .search-icon div h5 {
-  color: #fff;
+  color: #f5f5f5;
   white-space: break-word;
   padding: .5rem 0rem;
   max-width: 11.673rem;
@@ -502,7 +503,7 @@ nav ul li {
   cursor: pointer;
   display: inline-block;
   padding: 1rem 2rem;
-  color: #fff;
+  color: #f5f5f5;
   font-size: 1.05rem;
   -webkit-transition: all 0.5s;
   transition: all 0.5s;
@@ -560,7 +561,7 @@ nav .input-field .search-icon::-webkit-input-placeholder {
 }
 
 nav .input-field .search-icon:hover, nav .input-field .search-icon:focus {
-  color: #fff;
+  color: #f5f5f5;
   width: 11.673rem;
   border-radius: 1.7rem;
   padding: .5rem .7rem;
@@ -601,7 +602,7 @@ nav .input-field .search-icon:hover, nav .input-field .search-icon:focus {
 
 .main-section .movie-description h1, .main-section .movie-description h2, .main-section .movie-description h3, .main-section .movie-description h4, .main-section .movie-description h5, .main-section .movie-description h6, .main-section .movie-description span, .main-section .movie-description p {
   margin: 0;
-  color: #fff;
+  color: #f5f5f5;
 }
 
 .main-section .movie-description h1 {
@@ -681,7 +682,7 @@ nav .input-field .search-icon:hover, nav .input-field .search-icon:focus {
 }
 
 .main-section .movie-description .control-buttons button svg {
-  fill: #fff;
+  fill: #f5f5f5;
 }
 
 .main-section .movie-description .control-buttons button:hover {
@@ -704,8 +705,8 @@ nav .input-field .search-icon:hover, nav .input-field .search-icon:focus {
 
 .main-section .rating .stars::before {
   content: '★★★★★';
-  background: -webkit-gradient(linear, left top, right top, from(#FEBE05), to(#fff));
-  background: linear-gradient(90deg, #FEBE05 var(--percent), #fff var(--percent));
+  background: -webkit-gradient(linear, left top, right top, from(#FEBE05), to(#f5f5f5));
+  background: linear-gradient(90deg, #FEBE05 var(--percent), #f5f5f5 var(--percent));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -767,7 +768,7 @@ nav .input-field .search-icon:hover, nav .input-field .search-icon:focus {
 .movie-list-section .selected span {
   padding: .5rem 0 0 0;
   max-width: 10.5rem;
-  color: #fff;
+  color: #f5f5f5;
   -webkit-transition: all .3s;
   transition: all .3s;
 }
@@ -833,7 +834,7 @@ nav .input-field .search-icon:hover, nav .input-field .search-icon:focus {
 }
 
 .movie-list-section .show-content-btn svg {
-  fill: #fff;
+  fill: #f5f5f5;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -850,5 +851,127 @@ nav .input-field .search-icon:hover, nav .input-field .search-icon:focus {
 .movie-list-section::-webkit-scrollbar-thumb {
   background-color: #13CBB9;
   border-radius: 10px;
+}
+
+.shows-main-grid {
+  padding: 2rem 10rem 0 10rem;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  display: -ms-grid;
+  display: grid;
+  -webkit-column-gap: 5%;
+          column-gap: 5%;
+  -ms-grid-columns: (21rem)[auto-fill];
+      grid-template-columns: repeat(auto-fill, 21rem);
+}
+
+.shows-main-grid .show-block {
+  padding: 1rem 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+.shows-main-grid .show-block .img-container {
+  position: relative;
+}
+
+.shows-main-grid .show-block .img-container .img-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  height: 102%;
+  width: 100%;
+  background-color: #373B3E;
+}
+
+.shows-main-grid .show-block .img-container .img-loader svg {
+  fill: #13CBB9;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-animation: img-loader 1.3s;
+          animation: img-loader 1.3s;
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+}
+
+.shows-main-grid .show-block .img-container .img-container-shade {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  height: 100%;
+  width: 100%;
+  background-color: #00000077;
+  opacity: 0;
+}
+
+.shows-main-grid .show-block .title-space {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.shows-main-grid .show-block .title-space h6 {
+  margin: 0;
+  padding: .5rem;
+  text-transform: capitalize;
+  font-size: 1.3rem;
+  color: #f5f5f5;
+}
+
+.shows-main-grid .show-block .title-space .settings {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: #f5f5f5;
+  padding: .5rem;
+}
+
+.shows-main-grid .show-block:hover {
+  cursor: pointer;
+}
+
+.shows-main-grid .show-block:hover .img-container-shade {
+  opacity: 1;
+  -webkit-transition: opacity .1s ease-in-out;
+  transition: opacity .1s ease-in-out;
+}
+
+.shows-main-grid .show-block:hover .title-space {
+  background-color: #1e1f33;
+  -webkit-transition: background-color .1s ease-in-out;
+  transition: background-color .1s ease-in-out;
 }
 /*# sourceMappingURL=global.css.map */
