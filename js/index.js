@@ -67,14 +67,17 @@ $(document).ready(function(){
                             $('.description-par').addClass('overflow-scroll');
                         }
                     },100)
+                    $(this).css('pointer-events','none');
                 } else {
                     $('.main-loader').remove();
                     $('body').css('background', 'none');
                     $('section').html('');
+                    $('movie-list-section').remove();
+                    $(nav[0]).css('pointer-events','all');
                 }
                 if(i == 1) {
                     $('body').css({
-                        'background':'#0F101A',
+                        'background':'#0B0B10',
                         'overflow-y':'scroll'
                     });
                     $('body').append('<section role="Film poster and description" class="shows-main-grid"></section>')
@@ -83,8 +86,10 @@ $(document).ready(function(){
                     $('body').scroll(function() {
                         console.log(x);
                     })
+                    $(this).css('pointer-events','none');
                 } else {
                     $('.shows-main-grid').remove();
+                    $(nav[1]).css('pointer-events','all');
                 }
             })
         }
@@ -287,11 +292,27 @@ async function getShows(page) {
                 <div class="img-container">
                     <div class="img-loader"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 11c.511-6.158 5.685-11 12-11s11.489 4.842 12 11h-2.009c-.506-5.046-4.793-9-9.991-9s-9.485 3.954-9.991 9h-2.009zm21.991 2c-.506 5.046-4.793 9-9.991 9s-9.485-3.954-9.991-9h-2.009c.511 6.158 5.685 11 12 11s11.489-4.842 12-11h-2.009z"/></svg></div>
                     <div class="img-container-shade"></div>
+                    <div class="hover-control-buttons">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-3 17v-10l9 5.146-9 4.854z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-.001 5.75c.69 0 1.251.56 1.251 1.25s-.561 1.25-1.251 1.25-1.249-.56-1.249-1.25.559-1.25 1.249-1.25zm2.001 12.25h-4v-1c.484-.179 1-.201 1-.735v-4.467c0-.534-.516-.618-1-.797v-1h3v6.265c0 .535.517.558 1 .735v.999z"/></svg>
+                    </div>
                     <img src="${'https://image.tmdb.org/t/p/w300'+ backdrop_path}">
                 </div>
                 <div class="title-space">
                 <h6>${name}</h6>
-                <div class="settings">•••</div>
+                <div class="settings">
+                <div class="settings-menu">
+                    <div class="inner-loader">
+                        <div class="settings-loader"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                    </div>
+                    <ul>
+                        <li><img src="./media/svg/generic/favorites-icon.svg" alt="favourites icon"><span>Add to favourites</span></li>
+                        <li><img src="./media/svg/generic/list-icon.svg" alt="watch later icon"><span>Add to watch later</span></li>
+                        <li><img src="./media/svg/generic/share-icon.svg" alt="share icon"><span>Share</span></li>
+                        <li><img src="./media/svg/generic/subscribe-icon.svg" alt="subscribe icon"><span>Subscribe</span></li>
+                    </ul>
+                </div>
+                •••</div>
             </div>
             </div>
         `)
@@ -299,6 +320,10 @@ async function getShows(page) {
             $('.img-loader').fadeOut('slow')
         })
     });
+    $('.settings').on('click', function(){
+        $(this).children($('.settings-menu')).toggleClass('focused');
+        $(this).find('.inner-loader').fadeOut('slow');
+    })
 }
 
 
