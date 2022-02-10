@@ -227,7 +227,7 @@ function getVideo(data){
     .then(data => {
        if(data){
         try {
-            let embed = [];
+            var embed = [];
             data.results.forEach(v => {
                 let {name, key, site, type} = v;
                 if(site == 'YouTube' && type == 'Trailer') {
