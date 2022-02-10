@@ -458,6 +458,7 @@ nav {
 }
 
 nav .search-results, nav .search-icon {
+  z-index: 10;
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
@@ -909,6 +910,11 @@ nav .input-field .search-icon:hover, nav .input-field .search-icon:focus {
   position: relative;
 }
 
+.shows-main-grid .show-block .img-container img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
 .shows-main-grid .show-block .img-container .hover-control-buttons {
   position: absolute;
   top: 3%;
@@ -916,7 +922,7 @@ nav .input-field .search-icon:hover, nav .input-field .search-icon:focus {
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
-  display: block;
+  display: none;
 }
 
 .shows-main-grid .show-block .img-container .hover-control-buttons svg {
@@ -1180,8 +1186,8 @@ nav .input-field .search-icon:hover, nav .input-field .search-icon:focus {
 }
 
 .shows-main-grid .show-block:hover .hover-control-buttons svg:hover {
-  -webkit-transition: background-color .3s ease-in-out;
-  transition: background-color .3s ease-in-out;
+  -webkit-transition: background-color .15s ease-in-out;
+  transition: background-color .15s ease-in-out;
   background-color: #ffffff52;
   border-radius: 50%;
 }
@@ -1196,5 +1202,17 @@ nav .input-field .search-icon:hover, nav .input-field .search-icon:focus {
   background-color: #161720;
   -webkit-transition: background-color .1s ease-in-out;
   transition: background-color .1s ease-in-out;
+}
+
+.load-content-btn {
+  background-color: #13CBB9;
+  display: block;
+  margin: 0 auto 1rem auto;
+  width: 7rem;
+  height: 2rem;
+  color: #f5f5f5;
+  text-transform: capitalize;
+  border-radius: .5rem;
+  cursor: pointer;
 }
 /*# sourceMappingURL=global.css.map */

@@ -56,6 +56,7 @@ $(document).ready(function(){
         for(let i = 0; i < nav.length; i++) {
             nav[i].addEventListener('click', function(){
                 if(i == 0) {
+                    $('body').css('height','100vh')
                     $('body').append(`${content[0].loader}`);
                     $('.main-loader').fadeOut("slow");
                     $('.main-section').html(`${content[0].mainSect}`);
@@ -78,15 +79,25 @@ $(document).ready(function(){
                 if(i == 1) {
                     $('body').css({
                         'background':'#0B0B10',
-                        'overflow-y':'scroll'
+                        'overflow-y':'scroll',
+                        'height':'100%'
                     });
                     $('body').append('<section role="Film poster and description" class="shows-main-grid"></section>')
-                    getShows(1); // must be greater than 0;
-                    var x = 0;
-                    $('body').scroll(function() {
-                        console.log(x);
-                    })
+                    getShows(getRandom(1, 20)); // must be greater than 0;
                     $(this).css('pointer-events','none');
+                    $('body').append('<button class="load-content-btn">see more</button>')
+                    $('.load-content-btn').on('click', function(){
+                        getShows(getRandom(1, 20))
+                        $('.load-content-btn').text('see all');
+                        if($('.load-content-btn').text() == 'see all') {
+                            $('.load-content-btn').on('click', function(){
+                                for(let i = 1; i <= 5; i++) {
+                                    getShows(i)
+                                }
+                                $('.load-content-btn').remove();
+                            })
+                        }
+                    })
                 } else {
                     $('.shows-main-grid').remove();
                     $(nav[1]).css('pointer-events','all');
@@ -103,12 +114,12 @@ function getConf() {
     fetch('https://api.themoviedb.org/3/configuration?api_key=da0ec74f280b41c3b79d45fa4cd12578')
     .then(res=> res.json())
     .then(data => {
-        console.log(data);
+        // console.log(data);
     })
 }
 getConf()
 
-var obj = {};
+let obj = {};
 
 function getGenres() {
     fetch('https://api.themoviedb.org/3/genre/movie/list?api_key=da0ec74f280b41c3b79d45fa4cd12578&language=en-US')
@@ -216,7 +227,7 @@ function getVideo(data){
     .then(data => {
        if(data){
         try {
-            var embed = [];
+            let embed = [];
             data.results.forEach(v => {
                 let {name, key, site, type} = v;
                 if(site == 'YouTube' && type == 'Trailer') {
@@ -228,7 +239,7 @@ function getVideo(data){
                 }
             })
         } catch(err) {
-            console.log(err);
+            console.error(err);
         }
        }
        $('body').append(`<div class="background-shadow">
@@ -239,7 +250,7 @@ function getVideo(data){
            $('.embed-loader').fadeOut('slow')
        })
        $(document).mouseup(function(e){
-            var container = $("embed");
+            let container = $("embed");
             if (!container.is(e.target) && container.has(e.target).length === 0) 
             {
                 $('.background-shadow').remove();
@@ -273,8 +284,8 @@ function search(){
     })
 
     $(document).mouseup(function(e){
-        var container = $('.search-results');
-        if (!container.is(e.target) && container.has(e.target).length === 0) 
+        let container = $('.search-results');
+        if(!container.is(e.target) && container.has(e.target).length === 0) 
         {
             $('.search-results').text('');
         }
@@ -284,7 +295,6 @@ function search(){
 async function getShows(page) {
     let res = await fetch(`${BASE_URL}/tv/popular?${API_KEY}&page=${page}`)
     let data = await res.json();
-    console.log(data);
     data.results.forEach(show => {
         let {name, backdrop_path} = show;
         $('.shows-main-grid').append(`
@@ -319,7 +329,17 @@ async function getShows(page) {
         $('img').ready(function(){
             $('.img-loader').fadeOut('slow')
         })
+        $(document).mouseup(function(e){
+            let container = $('.settings-menu');
+            if(!container.is(e.target) && container.has(e.target).length === 0) 
+            {
+                $('.settings-menu').removeClass('focused');
+            }
+        });
     });
+    $('img').on('error', function(){
+        $(this).attr('src', './media/jpg/error-image.jpg');
+    })
     $('.settings').on('click', function(){
         $(this).children($('.settings-menu')).toggleClass('focused');
         $(this).find('.inner-loader').fadeOut('slow');
