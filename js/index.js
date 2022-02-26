@@ -117,6 +117,20 @@ $(document).ready(function(){
                     $(nav[2]).css('pointer-events','all');
                     $('.movie-quarry').remove();
                 }
+                if(i == 3) {
+                    $('body').css({
+                        'background':'#0B0B10',
+                        'overflow-y':'scroll',
+                        'height':'100%'
+                    });
+                    $('nav').css({
+                        'background':'#13131A',
+                        'box-shadow':'0 0px 10px #00000081',
+                        'border-bottom':'none'
+                    })
+                } else {
+                    $(nav[3]).css('pointer-events','all');
+                }
             })
         }
     }
@@ -154,6 +168,8 @@ function getMovies(url) {
 
 let val = new Number;
 
+let favarr = [];
+
 function randomMovie(data) {
     try {
         val = getRandom(0, 20)
@@ -168,7 +184,16 @@ function randomMovie(data) {
         for(let i = 0; i < data[val].genre_ids.length; i++) {
             $('.genres').append(`<span>${obj[i].name}</span>`)
         }
-        $('.description-par').text(data[val].overview)
+        $('.description-par').text(data[val].overview);
+        $('.add').on('click', function(){
+            favarr.push(
+                {
+                    header : data[val].original_title,
+                    body : data[val].overview,
+                    img : BACKDROP_URL + data[val].backdrop_path
+                }
+            )
+        });
     } catch (err) {
         // console.error(err);
     }
@@ -415,7 +440,7 @@ async function getMovQuerries(page) {
                 $('.settings').on('click', function(){
                     $(this).children($('.settings-menu')).toggleClass('focused');
                     $(this).find('.inner-loader').fadeOut('slow');
-                })
+                });
             }
         });
     }
@@ -511,7 +536,6 @@ async function getMovQuerries(page) {
         };
     }
 }
-
 
 function generateShows(n, bp, d) {
     $(`.${d}`).append(`
