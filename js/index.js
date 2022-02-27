@@ -14,7 +14,7 @@ $(document).ready(function(){
             moviescroll : $('.movie-list-section').html()
         }
     }
-    getMovies(MOST_POPULAR)
+    getMovies(MOST_POPULAR);
     randomScroll();
     // contentDrag();
     setTimeout(() => {
@@ -40,7 +40,6 @@ $(document).ready(function(){
             $('.search-results').text('')
         }
     })
-
     // navigation
     function navigation() {
         let nav = $('li');
@@ -195,7 +194,7 @@ function randomMovie(data) {
             )
         });
     } catch (err) {
-        // console.error(err);
+
     }
 }
 
@@ -329,8 +328,8 @@ async function getShows(page) {
     let res = await fetch(`${BASE_URL}/tv/popular?${API_KEY}&page=${page}`)
     let data = await res.json();
     data.results.forEach(show => {
-        let {name, backdrop_path} = show;
-        generateShows(name, backdrop_path, 'shows-main-grid');
+        let {name, backdrop_path, overview} = show;
+        generateShows(name, backdrop_path, 'shows-main-grid', overview);
         $('img').ready(function(){
             $('.img-loader').fadeOut('slow')
         })
@@ -342,12 +341,38 @@ async function getShows(page) {
             }
         });
     });
+    $('.about').on('click', function(){
+        $(this).parents('.img-container').find('.about-box').css('display', 'unset');
+        $(this).parents('.img-container').find('.about-box').on('click', function(){
+            $(this).css('display', 'none');
+        })
+    });
     $('img').on('error', function(){
         $(this).attr('src', './media/jpg/error-image.jpg');
     })
     $('.settings').on('click', function(){
         $(this).children($('.settings-menu')).toggleClass('focused');
         $(this).find('.inner-loader').fadeOut('slow');
+    })
+    $('.li-atf').on('click', function(){
+        if($(this).find('span').text() == 'Add to favourites') {
+            $(this).find('span').text('Remove from favourites');
+            $(this).find('img').css('display', 'none');
+            favarr.push(
+                {
+                    header : $(this).parents('.show-block').find('h6').text(),
+                    body: data.results.overview,
+                    img : $(this).parents('.show-block').find('img')[0].src,
+                }
+            )
+        } else {
+            $(this).find('span').text('Add to favourites');
+            $(this).find('img').css('display', 'unset');
+            let index = favarr.findIndex(e => {
+                return e.header == $(this).parents('.show-block').find('h6').text()
+            })
+            favarr.splice(index, 1);
+        }
     })
 }
 
@@ -399,8 +424,14 @@ async function getMovQuerries(page) {
                         if(data.results[d].title.length > 21) {
                             data.results[d].title = `${data.results[d].title.slice(0, 20)}...`;
                         };
-                        generateShows(data.results[d].title, data.results[d].backdrop_path, 'movie-wrapper-flex');
+                        generateShows(data.results[d].title, data.results[d].backdrop_path, 'movie-wrapper-flex', data.results[d].overview);
                     }
+                    $('.about').on('click', function(){
+                        $(this).parents('.img-container').find('.about-box').css('display', 'unset');
+                        $(this).parents('.img-container').find('.about-box').on('click', function(){
+                            $(this).css('display', 'none');
+                        })
+                    });
                     $('img').on('error', function(){
                         $(this).attr('src', './media/jpg/error-image.jpg');
                     })
@@ -450,7 +481,7 @@ async function getMovQuerries(page) {
         let data = await res.json();
         $('.movie-quarry').append('<div class="movie-wrapper-flex"></div>')
         data.results.forEach(movie => {
-            let {title, backdrop_path} = movie;
+            let {title, backdrop_path, overview} = movie;
             if(once == 0) {
                 $('#filter').on('change', function(){
                     if(filterarr.length > 0) {
@@ -472,10 +503,16 @@ async function getMovQuerries(page) {
             if(title.length > 21) {
                 title = `${title.slice(0, 20)}...`;
             }
-            generateShows(title, backdrop_path, 'movie-wrapper-flex');
+            generateShows(title, backdrop_path, 'movie-wrapper-flex', overview);
             $('img').ready(function(){
                 $('.img-loader').fadeOut('slow')
             })
+            $('.about').on('click', function(){
+                $(this).parents('.img-container').find('.about-box').css('display', 'unset');
+                $(this).parents('.img-container').find('.about-box').on('click', function(){
+                    $(this).css('display', 'none');
+                })
+            });
             $('.movie-quarry').mouseup(function(e){
                 let container = $('.settings-menu');
                 if(!container.is(e.target) && container.has(e.target).length === 0) 
@@ -537,15 +574,18 @@ async function getMovQuerries(page) {
     }
 }
 
-function generateShows(n, bp, d) {
+function generateShows(n, bp, d, o) {
     $(`.${d}`).append(`
     <div class="show-block">
         <div class="img-container">
             <div class="img-loader"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 11c.511-6.158 5.685-11 12-11s11.489 4.842 12 11h-2.009c-.506-5.046-4.793-9-9.991-9s-9.485 3.954-9.991 9h-2.009zm21.991 2c-.506 5.046-4.793 9-9.991 9s-9.485-3.954-9.991-9h-2.009c.511 6.158 5.685 11 12 11s11.489-4.842 12-11h-2.009z"/></svg></div>
             <div class="img-container-shade"></div>
             <div class="hover-control-buttons">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-3 17v-10l9 5.146-9 4.854z"/></svg>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-.001 5.75c.69 0 1.251.56 1.251 1.25s-.561 1.25-1.251 1.25-1.249-.56-1.249-1.25.559-1.25 1.249-1.25zm2.001 12.25h-4v-1c.484-.179 1-.201 1-.735v-4.467c0-.534-.516-.618-1-.797v-1h3v6.265c0 .535.517.558 1 .735v.999z"/></svg>
+                <svg class="watch-trailer" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-3 17v-10l9 5.146-9 4.854z"/></svg>
+                <svg class="about" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-.001 5.75c.69 0 1.251.56 1.251 1.25s-.561 1.25-1.251 1.25-1.249-.56-1.249-1.25.559-1.25 1.249-1.25zm2.001 12.25h-4v-1c.484-.179 1-.201 1-.735v-4.467c0-.534-.516-.618-1-.797v-1h3v6.265c0 .535.517.558 1 .735v.999z"/></svg>
+            </div>
+            <div class="about-box">
+                <span>${o}</span>
             </div>
             <img src="${'https://image.tmdb.org/t/p/w300'+ bp}">
         </div>
@@ -557,10 +597,10 @@ function generateShows(n, bp, d) {
                 <div class="settings-loader"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
             </div>
             <ul>
-                <li><img src="./media/svg/generic/favorites-icon.svg" alt="favourites icon"><span>Add to favourites</span></li>
-                <li><img src="./media/svg/generic/list-icon.svg" alt="watch later icon"><span>Add to watch later</span></li>
-                <li><img src="./media/svg/generic/share-icon.svg" alt="share icon"><span>Share</span></li>
-                <li><img src="./media/svg/generic/subscribe-icon.svg" alt="subscribe icon"><span>Subscribe</span></li>
+                <li class="li-atf"><img src="./media/svg/generic/favorites-icon.svg" alt="favourites icon"><span>Add to favourites</span></li>
+                <li class="li-atwl"><img src="./media/svg/generic/list-icon.svg" alt="watch later icon"><span>Add to watch later</span></li>
+                <li class="li-ash"><img src="./media/svg/generic/share-icon.svg" alt="share icon"><span>Share</span></li>
+                <li class="li-asub"><img src="./media/svg/generic/subscribe-icon.svg" alt="subscribe icon"><span>Subscribe</span></li>
             </ul>
         </div>
         •••</div>
