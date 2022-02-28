@@ -184,15 +184,6 @@ function randomMovie(data) {
             $('.genres').append(`<span>${obj[i].name}</span>`)
         }
         $('.description-par').text(data[val].overview);
-        $('.add').on('click', function(){
-            favarr.push(
-                {
-                    header : data[val].original_title,
-                    body : data[val].overview,
-                    img : BACKDROP_URL + data[val].backdrop_path
-                }
-            )
-        });
     } catch (err) {
 
     }
@@ -349,11 +340,11 @@ async function getShows(page) {
     });
     $('img').on('error', function(){
         $(this).attr('src', './media/jpg/error-image.jpg');
-    })
+    });
     $('.settings').on('click', function(){
         $(this).children($('.settings-menu')).toggleClass('focused');
         $(this).find('.inner-loader').fadeOut('slow');
-    })
+    });
     $('.li-atf').on('click', function(){
         if($(this).find('span').text() == 'Add to favourites') {
             $(this).find('span').text('Remove from favourites');
@@ -361,10 +352,10 @@ async function getShows(page) {
             favarr.push(
                 {
                     header : $(this).parents('.show-block').find('h6').text(),
-                    body: data.results.overview,
                     img : $(this).parents('.show-block').find('img')[0].src,
                 }
             )
+            console.log(favarr);
         } else {
             $(this).find('span').text('Add to favourites');
             $(this).find('img').css('display', 'unset');
@@ -372,8 +363,9 @@ async function getShows(page) {
                 return e.header == $(this).parents('.show-block').find('h6').text()
             })
             favarr.splice(index, 1);
+            console.log(favarr);
         }
-    })
+    });
 }
 
 async function getMovQuerries(page) {
@@ -439,7 +431,28 @@ async function getMovQuerries(page) {
                         $(this).children($('.settings-menu')).toggleClass('focused');
                         $(this).find('.inner-loader').fadeOut('slow');
                     })
-                    $('.snap').remove()
+                    $('.li-atf').on('click', function(){
+                        if($(this).find('span').text() == 'Add to favourites') {
+                            $(this).find('span').text('Remove from favourites');
+                            $(this).find('img').css('display', 'none');
+                            favarr.push(
+                                {
+                                    header : $(this).parents('.show-block').find('h6').text(),
+                                    img : $(this).parents('.show-block').find('img')[0].src,
+                                }
+                            )
+                            console.log(favarr);
+                        } else {
+                            $(this).find('span').text('Add to favourites');
+                            $(this).find('img').css('display', 'unset');
+                            let index = favarr.findIndex(e => {
+                                return e.header == $(this).parents('.show-block').find('h6').text()
+                            })
+                            favarr.splice(index, 1);
+                            console.log(favarr);
+                        }
+                    });
+                    $('.snap').remove();
                 } else {
                     $('.snap').remove()
                     $('.movie-wrapper-flex').remove();
@@ -506,7 +519,7 @@ async function getMovQuerries(page) {
             generateShows(title, backdrop_path, 'movie-wrapper-flex', overview);
             $('img').ready(function(){
                 $('.img-loader').fadeOut('slow')
-            })
+            });
             $('.about').on('click', function(){
                 $(this).parents('.img-container').find('.about-box').css('display', 'unset');
                 $(this).parents('.img-container').find('.about-box').on('click', function(){
@@ -525,7 +538,7 @@ async function getMovQuerries(page) {
         $('.settings').on('click', function(){
             $(this).children($('.settings-menu')).toggleClass('focused');
             $(this).find('.inner-loader').fadeOut('slow');
-        })
+        });
     }
     function filtered(avgurl, popurl) {
         if($('#filter').val() == 'vote_avg') {
