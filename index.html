@@ -28,7 +28,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M11.266 7l12.734-2.625-.008-.042-1.008-4.333-21.169 4.196c-1.054.209-1.815 1.134-1.815 2.207v14.597c0 1.657 1.343 3 3 3h18c1.657 0 3-1.343 3-3v-14h-12.734zm8.844-5.243l2.396 1.604-2.994.595-2.398-1.605 2.996-.594zm-5.898 1.169l2.4 1.606-2.994.595-2.401-1.607 2.995-.594zm-5.904 1.171l2.403 1.608-2.993.595-2.406-1.61 2.996-.593zm-2.555 5.903l2.039-2h3.054l-2.039 2h-3.054zm4.247 10v-7l6 3.414-6 3.586zm4.827-10h-3.054l2.039-2h3.054l-2.039 2zm6.012 0h-3.054l2.039-2h3.054l-2.039 2z"/></svg>
     </div>
     <nav role="navigation">
-        <a href="#">
+        <a href="./index.html">
             <h1 class="logo">
                 <span>M</span>oviestar
             </h1>
@@ -42,6 +42,30 @@
         <div class="input-field">
             <div class="search-results"></div>
             <input type="search" class="search-icon" id="searchField" placeholder="Search...">
+        </div>
+        <div class="burger-nav">
+            <div id="burgerOpen">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 6h-24v-4h24v4zm0 4h-24v4h24v-4zm0 8h-24v4h24v-4z"/></svg>
+            </div>
+            <div id="burgerMenu" class="burger-menu">
+                <div class="burger-menu-wrapper" id="burgerWrapper">
+                    <div id="burgerClose">
+                        <svg width="20" height="21" viewBox="0 0 20 21" xmlns="http://www.w3.org/2000/svg">
+                            <g id="Group">
+                            <rect id="Rectangle Copy" x="2.5752" y="0.954102" width="24" height="3" transform="rotate(45 2.5752 0.954102)"/>
+                            <rect id="Rectangle Copy 3" x="0.454102" y="17.9246" width="24" height="3" transform="rotate(-45 0.454102 17.9246)"/>
+                            </g>
+                        </svg>
+                    </div>
+                    <ul class="burgerList">
+                        <li>Home</li>
+                        <li>Tv Shows</li>
+                        <li>Movies</li>
+                        <li>Favourites</li>
+                        <li>Search</li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </nav>
     <section role="Film poster and description" class="main-section">
@@ -63,7 +87,7 @@
             </div>
         </div>
     </section>
-    <section role="Draggable movie list" class="movie-list-section display-on">
+    <section role="Movie list" class="movie-list-section display-on">
         <div class="list-section-inner">
         </div>
     </section>

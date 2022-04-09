@@ -24,3 +24,23 @@
     transform: translate(-50%, -50%) scale(1.5);
   }
 }
+
+@keyframes hide {
+  0% {
+    bottom: 0;
+    top: 65.4%;
+  } 100% {
+    bottom: -50px;
+    top: 85%;
+  }
+}
+
+@keyframes show {
+  0% {
+    bottom: -50px;
+    top: 85%;
+  } 100% {
+    bottom: 0;
+    top: 65.4%;
+  }
+}

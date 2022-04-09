@@ -87,7 +87,7 @@ nav {
     a {
         text-decoration: none;
     }
-    h1 {
+    .logo {
         margin: 0;
         color: #13CBB9;
         text-transform: uppercase;
@@ -96,6 +96,12 @@ nav {
         }
     }
     ul {
+        @media screen and (max-width: 1050px) {
+            text-align: center;
+        }
+        @media screen and (max-width: 705px) {
+            display: none;
+        }
         margin: 0;
         padding: 0;
         li {
@@ -116,6 +122,9 @@ nav {
         }
     }
     .input-field {
+        @media screen and (max-width: 705px) {
+            display: none;
+        }
         width: 11.673rem;
         position: relative;
         .search-results {
@@ -153,6 +162,49 @@ nav {
             background: url(../media/svg/generic/search-lupe.svg) no-repeat #373B3E;
             background-position: right 7px bottom 8px;
             padding-right: 30px;
+        }
+    }
+
+    .burger-nav, #burgerOpen, #burgerClose {
+        display: none;
+        z-index: 10;
+    }
+    .burger-nav, #burgerOpen {
+        @media screen and (max-width: 705px) {
+            display: block;
+        }
+    }
+    .burger-menu {
+        min-height: 100vh;
+        position: absolute;
+        width: 0;
+        right: 0;
+        top: 0;
+        background-color: #0d0d0df5;
+        transition: width .5s ease-in-out;
+        #burgerWrapper {
+            height: 0;
+            overflow: hidden;
+            margin-top: 34px;
+            transition: height .5s ease-in-out;
+            .burgerList {
+                display: flex;
+                flex-direction: column;
+                z-index: 15;
+            }
+        }
+        #burgerClose {
+            float: right;
+            margin: 0 26.45px 65px 0;
+            svg {
+                fill: #13C6B3;
+            }
+        }
+    }
+    #burgerOpen {
+        svg {
+            cursor: pointer;
+            fill: #13C6B3;
         }
     }
 }

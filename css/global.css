@@ -363,6 +363,50 @@ textarea,
   }
 }
 
+@-webkit-keyframes hide {
+  0% {
+    bottom: 0;
+    top: 65.4%;
+  }
+  100% {
+    bottom: -50px;
+    top: 85%;
+  }
+}
+
+@keyframes hide {
+  0% {
+    bottom: 0;
+    top: 65.4%;
+  }
+  100% {
+    bottom: -50px;
+    top: 85%;
+  }
+}
+
+@-webkit-keyframes show {
+  0% {
+    bottom: -50px;
+    top: 85%;
+  }
+  100% {
+    bottom: 0;
+    top: 65.4%;
+  }
+}
+
+@keyframes show {
+  0% {
+    bottom: -50px;
+    top: 85%;
+  }
+  100% {
+    bottom: 0;
+    top: 65.4%;
+  }
+}
+
 body {
   font-family: 'Roboto', sans-serif;
   overflow: hidden;
@@ -506,19 +550,31 @@ nav a {
   text-decoration: none;
 }
 
-nav h1 {
+nav .logo {
   margin: 0;
   color: #13CBB9;
   text-transform: uppercase;
 }
 
-nav h1 span {
+nav .logo span {
   font-size: 2.5rem;
 }
 
 nav ul {
   margin: 0;
   padding: 0;
+}
+
+@media screen and (max-width: 1050px) {
+  nav ul {
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 705px) {
+  nav ul {
+    display: none;
+  }
 }
 
 nav ul li {
@@ -544,6 +600,12 @@ nav ul .active {
 nav .input-field {
   width: 11.673rem;
   position: relative;
+}
+
+@media screen and (max-width: 705px) {
+  nav .input-field {
+    display: none;
+  }
 }
 
 nav .input-field .search-results {
@@ -590,6 +652,61 @@ nav .input-field .search-icon:hover, nav .input-field .search-icon:focus {
   background: url(../media/svg/generic/search-lupe.svg) no-repeat #373B3E;
   background-position: right 7px bottom 8px;
   padding-right: 30px;
+}
+
+nav .burger-nav, nav #burgerOpen, nav #burgerClose {
+  display: none;
+  z-index: 10;
+}
+
+@media screen and (max-width: 705px) {
+  nav .burger-nav, nav #burgerOpen {
+    display: block;
+  }
+}
+
+nav .burger-menu {
+  min-height: 100vh;
+  position: absolute;
+  width: 0;
+  right: 0;
+  top: 0;
+  background-color: #0d0d0df5;
+  -webkit-transition: width .5s ease-in-out;
+  transition: width .5s ease-in-out;
+}
+
+nav .burger-menu #burgerWrapper {
+  height: 0;
+  overflow: hidden;
+  margin-top: 34px;
+  -webkit-transition: height .5s ease-in-out;
+  transition: height .5s ease-in-out;
+}
+
+nav .burger-menu #burgerWrapper .burgerList {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  z-index: 15;
+}
+
+nav .burger-menu #burgerClose {
+  float: right;
+  margin: 0 26.45px 65px 0;
+}
+
+nav .burger-menu #burgerClose svg {
+  fill: #13C6B3;
+}
+
+nav #burgerOpen svg {
+  cursor: pointer;
+  fill: #13C6B3;
 }
 
 .main-section {
