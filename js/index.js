@@ -84,19 +84,17 @@ $(document).ready(function () {
           $("body").append(
             '<section role="Film poster and description" class="shows-main-grid"></section>'
           );
-          getShows(getRandom(1, 20)); // must be greater than 0;
+          getShows(1); // must be greater than 0;
           $(this).css("pointer-events", "none");
           $("body").append(
             '<button class="load-content-btn">see more</button>'
           );
           $(".load-content-btn").on("click", function () {
-            getShows(getRandom(1, 20));
+            getShows(getRandom(1, 2));
             $(".load-content-btn").text("see all");
             if ($(".load-content-btn").text() == "see all") {
               $(".load-content-btn").on("click", function () {
-                for (let i = 1; i <= 5; i++) {
-                  getShows(i);
-                }
+                getShows(getRandom(3, 5));
                 $(".load-content-btn").remove();
               });
             }
@@ -363,22 +361,24 @@ async function search() {
   });
 }
 
-async function getShows(page) {
-  let res = await fetch(`${BASE_URL}/tv/popular?${API_KEY}&page=${page}`);
-  let data = await res.json();
-  data.results.forEach((show) => {
-    let { name, backdrop_path, overview } = show;
-    generateShows(name, backdrop_path, "shows-main-grid", overview);
-    $("img").ready(function () {
-      $(".img-loader").fadeOut("slow");
+async function getShows(indx) {
+  for (let i = 1; i <= indx; i++) {
+    let res = await fetch(`${BASE_URL}/tv/popular?${API_KEY}&page=${i}`);
+    let data = await res.json();
+    data.results.forEach((show) => {
+      let { name, backdrop_path, overview } = show;
+      generateShows(name, backdrop_path, "shows-main-grid", overview);
+      $("img").ready(function () {
+        $(".img-loader").fadeOut("slow");
+      });
+      $(".shows-main-grid").mouseup(function (e) {
+        let container = $(".settings-menu");
+        if (!container.is(e.target) && container.has(e.target).length === 0) {
+          $(".settings-menu").removeClass("focused");
+        }
+      });
     });
-    $(".shows-main-grid").mouseup(function (e) {
-      let container = $(".settings-menu");
-      if (!container.is(e.target) && container.has(e.target).length === 0) {
-        $(".settings-menu").removeClass("focused");
-      }
-    });
-  });
+  }
   $(".about").on("click", function () {
     $(this)
       .parents(".img-container")
@@ -394,26 +394,28 @@ async function getShows(page) {
   $("img").on("error", function () {
     $(this).attr("src", "./media/jpg/error-image.jpg");
   });
-  $(".settings").on("click", function () {
-    $(this).children($(".settings-menu")).toggleClass("focused");
-    $(this).find(".inner-loader").fadeOut("slow");
-  });
   $(".li-atf").on("click", function () {
+    let index = $(this).parents(".show-block").index();
     if ($(this).find("span").text() == "Add to favourites") {
       $(this).find("span").text("Remove from favourites");
       $(this).find("img").css("display", "none");
-      favarr.push({
-        header: $(this).parents(".show-block").find("h6").text(),
-        img: $(this).parents(".show-block").find("img")[0].src,
-      });
-    } else {
+      localStorage.setItem(
+        index,
+        JSON.stringify({
+          header: $(this).parents(".show-block").find("h6").text(),
+          img: $(this).parents(".show-block").find("img")[0].src,
+        })
+      );
+    } else if ($(this).find("span").text() == "Remove from favourites") {
       $(this).find("span").text("Add to favourites");
       $(this).find("img").css("display", "unset");
-      let index = favarr.findIndex((e) => {
-        return e.header == $(this).parents(".show-block").find("h6").text();
-      });
-      favarr.splice(index, 1);
+      let index = $(this).parents(".show-block").index();
+      localStorage.removeItem(index);
     }
+  });
+  $(".settings").on("click", function () {
+    $(this).children($(".settings-menu")).toggleClass("focused");
+    $(this).find(".inner-loader").fadeOut("slow");
   });
 }
 
@@ -511,6 +513,27 @@ async function getMovQuerries(page) {
                         </div>`
             );
           }
+          $(".li-atf").on("click", function () {
+            let index = $(this).parents(".show-block").index();
+            if ($(this).find("span").text() == "Add to favourites") {
+              $(this).find("span").text("Remove from favourites");
+              $(this).find("img").css("display", "none");
+              localStorage.setItem(
+                index,
+                JSON.stringify({
+                  header: $(this).parents(".show-block").find("h6").text(),
+                  img: $(this).parents(".show-block").find("img")[0].src,
+                })
+              );
+            } else if (
+              $(this).find("span").text() == "Remove from favourites"
+            ) {
+              $(this).find("span").text("Add to favourites");
+              $(this).find("img").css("display", "unset");
+              let index = $(this).parents(".show-block").index();
+              localStorage.removeItem(index);
+            }
+          });
         });
       if (filterarr.length == 0) {
         $("#filter").attr("class", "unfiltered");
@@ -591,10 +614,6 @@ async function getMovQuerries(page) {
       });
     });
     cache = $(".movie-wrapper-flex").prop("outerHTML");
-    $(".settings").on("click", function () {
-      $(this).children($(".settings-menu")).toggleClass("focused");
-      $(this).find(".inner-loader").fadeOut("slow");
-    });
   }
   function filtered(avgurl, popurl) {
     if ($("#filter").val() == "vote_avg") {
@@ -627,6 +646,27 @@ async function getMovQuerries(page) {
             $(".settings").on("click", function () {
               $(this).children($(".settings-menu")).toggleClass("focused");
               $(this).find(".inner-loader").fadeOut("slow");
+            });
+            $(".li-atf").on("click", function () {
+              let index = $(this).parents(".show-block").index();
+              if ($(this).find("span").text() == "Add to favourites") {
+                $(this).find("span").text("Remove from favourites");
+                $(this).find("img").css("display", "none");
+                localStorage.setItem(
+                  index,
+                  JSON.stringify({
+                    header: $(this).parents(".show-block").find("h6").text(),
+                    img: $(this).parents(".show-block").find("img")[0].src,
+                  })
+                );
+              } else if (
+                $(this).find("span").text() == "Remove from favourites"
+              ) {
+                $(this).find("span").text("Add to favourites");
+                $(this).find("img").css("display", "unset");
+                let index = $(this).parents(".show-block").index();
+                localStorage.removeItem(index);
+              }
             });
           } else {
             $(".snap").remove();
@@ -670,6 +710,27 @@ async function getMovQuerries(page) {
               $(this).children($(".settings-menu")).toggleClass("focused");
               $(this).find(".inner-loader").fadeOut("slow");
             });
+            $(".li-atf").on("click", function () {
+              let index = $(this).parents(".show-block").index();
+              if ($(this).find("span").text() == "Add to favourites") {
+                $(this).find("span").text("Remove from favourites");
+                $(this).find("img").css("display", "none");
+                localStorage.setItem(
+                  index,
+                  JSON.stringify({
+                    header: $(this).parents(".show-block").find("h6").text(),
+                    img: $(this).parents(".show-block").find("img")[0].src,
+                  })
+                );
+              } else if (
+                $(this).find("span").text() == "Remove from favourites"
+              ) {
+                $(this).find("span").text("Add to favourites");
+                $(this).find("img").css("display", "unset");
+                let index = $(this).parents(".show-block").index();
+                localStorage.removeItem(index);
+              }
+            });
           } else {
             $(".snap").remove();
             $(".movie-wrapper-flex").remove();
@@ -683,7 +744,11 @@ async function getMovQuerries(page) {
         });
     }
   }
-  $(".li-atf").on("click", function (e) {
+  $(".settings").on("click", function () {
+    $(this).children($(".settings-menu")).toggleClass("focused");
+    $(this).find(".inner-loader").fadeOut("slow");
+  });
+  $(".li-atf").on("click", function () {
     let index = $(this).parents(".show-block").index();
     if ($(this).find("span").text() == "Add to favourites") {
       $(this).find("span").text("Remove from favourites");
@@ -695,7 +760,7 @@ async function getMovQuerries(page) {
           img: $(this).parents(".show-block").find("img")[0].src,
         })
       );
-    } else {
+    } else if ($(this).find("span").text() == "Remove from favourites") {
       $(this).find("span").text("Add to favourites");
       $(this).find("img").css("display", "unset");
       let index = $(this).parents(".show-block").index();
@@ -764,11 +829,10 @@ function generateShows(n, bp, d, o) {
             <div class="img-loader"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 11c.511-6.158 5.685-11 12-11s11.489 4.842 12 11h-2.009c-.506-5.046-4.793-9-9.991-9s-9.485 3.954-9.991 9h-2.009zm21.991 2c-.506 5.046-4.793 9-9.991 9s-9.485-3.954-9.991-9h-2.009c.511 6.158 5.685 11 12 11s11.489-4.842 12-11h-2.009z"/></svg></div>
             <div class="img-container-shade"></div>
             <div class="hover-control-buttons">
-                <svg class="watch-trailer" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-3 17v-10l9 5.146-9 4.854z"/></svg>
                 <svg class="about" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-.001 5.75c.69 0 1.251.56 1.251 1.25s-.561 1.25-1.251 1.25-1.249-.56-1.249-1.25.559-1.25 1.249-1.25zm2.001 12.25h-4v-1c.484-.179 1-.201 1-.735v-4.467c0-.534-.516-.618-1-.797v-1h3v6.265c0 .535.517.558 1 .735v.999z"/></svg>
             </div>
             <div class="about-box">
-                <span>${o}</span>
+                <span>${o.length > 0 ? o : "🤕No description found"}</span>
             </div>
             <img src="${"https://image.tmdb.org/t/p/w300" + bp}">
         </div>
